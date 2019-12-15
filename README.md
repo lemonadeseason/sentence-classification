@@ -1,12 +1,23 @@
-downloaded from  “https://github.com/galsang/CNN-sentence-classification-pytorch”,trying to understand every row of this project.
+Downloaded from  “https://github.com/galsang/CNN-sentence-classification-pytorch”,trying to understand every row of this project.
 
+代码主要组成部分：
+1.加载数据
+2.非rand模型加载预训练词向量
+3.textCNN模型
 
+1.加载数据
+TREC数据集是由可分为6类问题类型的问题数据集构成的，格式为：category：question/n。数据集分为train、test。train中又可以读取出train、dev，dev可以用于选择最佳模型。
+这份代码中并没有用torchtext这类模块，或者写好vocab类似的辅助函数，而是用简洁有力的几条代码就获得textCNN可以接受的输入格式。
+read_TREC()返回data，包含train、dev、test的x，y。train_x是list of list，形如[['Do'...],...[]],train_y是['DSEC'...]
+可以很简单地获得最长的句子长度max_sent_len，也可以建立起word和label的vocab。
+在train函数中将x，y数字化，并对x进行pad。
 
+2.加载pretrained word embedding
+用genism中的keyedwordvectors加载，并用vocab的顺序形成这个数据集中可以用到的embedding，预训练中没有的用uniform均匀性分布生成。最后，添加unk、pad对应的embedding。
 
-
-
-
-
+3.textCNN由conv1d、relu、maxpool1d、fc构成。
+conv1d（input_channel,output_channel,kernel_size,stride = 1,padding=0...）
+input_channel在nlp中可以认为是词向量维度，output_channel是filter个数，kernel_size可以理解为每次卷积处理的词数，在input_channel不为1时，实际kernel_size = （参数kernel_size,input_channel）。下图说明的很清楚：
 
 # Convolutional Neural Networks for Sentence Classification
 
@@ -32,7 +43,7 @@ Experiments have been done with a learning rate = ~~0.1~~ 1 up to ~~300~~ 100 ep
 | Non-static   | Results  | 80.1 | **94.4** |
 |              | Baseline | 81.5 | 93.6 |
 | Multichannel | Results  | 79.8 | **93.6** |
-|              | Baseline | 81.1 | 92.2 |
+|              | Baseline | 81.1 | 92.2 |     92.2验证正确
 
 
 ## Specification
