@@ -17,7 +17,10 @@ read_TREC()返回data，包含train、dev、test的x，y。train_x是list of lis
 
 3.textCNN由conv1d、relu、maxpool1d、fc构成。
 conv1d（input_channel,output_channel,kernel_size,stride = 1,padding=0...）
-input_channel在nlp中可以认为是词向量维度，output_channel是filter个数，kernel_size可以理解为每次卷积处理的词数，在input_channel不为1时，实际kernel_size = （参数kernel_size,input_channel）。下图说明的很清楚：
+input_channel在nlp中可以认为是词向量维度，output_channel是filter个数，kernel_size可以理解为每次卷积处理的词数，在input_channel不为1时，实际kernel_size = （参数kernel_size,input_channel）。
+
+输入格式（1）：（batch_size,2,max_sent_len*emdedding）  把二维的embedding矩阵展开成一维   kernel（2,3*embedding）,形成（batch_size,filter_num,max_sent_len-3+1）
+输入格式（2）：   （batch_size,emdedding,max_sent_len）  kernel(embedding,3)   但是不知道如何用这种格式处理multi-channel。
 
 # Convolutional Neural Networks for Sentence Classification
 
